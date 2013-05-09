@@ -1,0 +1,52 @@
+#player
+
+require './rect.rb'
+require './routines.rb'
+
+class Player
+  
+  attr_accessor :x, :y
+  
+  def initialize(x, y)
+    @x = x
+    @y = y
+    @w = 32
+    @h = 32
+   
+    @dy = 0
+
+    @speed = 4
+
+    @color = 0xFFFFFFFF
+
+    @rect = Rect.new(x, y, @w, @h)
+  end
+
+  def update(tiles)
+    tiles.each do |h,k|
+      puts k.rect
+      puts @rect
+      if k.rect.collides?(@rect)
+        puts 1
+        @rect = @rect.align_against(k.rect)
+        @x = @rect.x
+        @y = @rect.y
+      end
+    end
+  end
+
+  def move(direction)
+    @x += direction*@speed
+
+    @rect = Rect.new(@x, @y, @w, @h)
+  end
+
+  def jump
+    dy = -6
+  end
+
+  def render(screen)
+    Drawing_Routines.draw_quad(screen, @x, @y, @w, @h, @color)
+  end
+
+end
